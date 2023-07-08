@@ -31,8 +31,8 @@ def review_columns_not_null():
 
     # Get a list of all column names
     column_names = df_residential_property.columns.values.tolist()
-    print(column_names)
 
+    # Loop through column names and drop if NOT_NULL values make up less than 1% the total
     for i in range(len(column_names)):
 
         # Review if columns is all null, and if not, how many are filled as a percent of total rows
