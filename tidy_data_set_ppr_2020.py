@@ -25,50 +25,33 @@ def display_dataframe():
     print()
     return df_residential_property_top_10
 
-def review_property_size_not_null():
+
+def review_columns_not_null():
     global df_residential_property
 
-    # Review if column "Property Size Description" is all null, and if not, how many are filled as a percent of total rows
-    df_size_not_null = df_residential_property.loc[df_residential_property["Property Size Description"].notnull(), "Property Size Description"]
+    # Get a list of all column names
+    column_names = df_residential_property.columns.values.tolist()
+    print(column_names)
 
-    print("\n=== Review of 'Property Size Description' column ===\n")
+    for i in range(len(column_names)):
 
-    total_count = df_size_not_null.count()
-    print("Total non-null values:", total_count)
+        # Review if columns is all null, and if not, how many are filled as a percent of total rows
+        df_not_null = df_residential_property.loc[df_residential_property[column_names[i]].notnull(), column_names[i]]
 
-    percentage = (total_count / len(df_residential_property)) * 100
-    print("Percentage of non null values: {:.2f}%".format(percentage))
+        print("\n=== Review of '{}' column ===\n".format(column_names[i]))
 
-    # If percent of rows with data is less than 1%, drop column 
-    if percentage < 1:
-        df_residential_property = df_residential_property.drop("Property Size Description", axis=1)
-        print("Dropped column: ", "Property Size Description\n")  
-    else:
-        print("No column dropped\n")
+        total_count = df_not_null.count()
+        print("Total non-null values:", total_count)
 
-    return df_residential_property
+        percentage = (total_count / len(df_residential_property)) * 100
+        print("Percentage of non null values: {:.2f}%".format(percentage))
 
-
-def review_postal_code():
-    global df_residential_property
-
-    # Review if column "Postal code" is all null, and if not, how many are filled as a percent of total rows
-    df_postal_not_null = df_residential_property.loc[df_residential_property["Postal Code"].notnull(), "Postal Code"]
-
-    print("\n=== Review of 'Postal Code' column ===\n")
-
-    total_count = df_postal_not_null.count()
-    print("Total non-null values:", total_count)
-
-    percentage = (total_count / len(df_residential_property)) * 100
-    print("Percentage of non null values: {:.2f}%".format(percentage))
-
-    # If percent of rows with data is less than 1%, drop column 
-    if percentage < 1:
-        df_residential_property = df_residential_property.drop("Postal Code", axis=1)
-        print("Dropped column: ", "Postal Code\n")  
-    else:
-        print("Postal Code column not dropped\n")
+        # If percent of rows with data is less than 1%, drop column 
+        if percentage < 1:
+            df_residential_property = df_residential_property.drop(column_names[i], axis=1)
+            print("Dropped column: ", "{}\n".format(column_names[i]))  
+        else:
+            print("{} column not dropped\n".format(column_names[i]))
 
     return df_residential_property
 
@@ -96,9 +79,9 @@ def average_price_by_county():
 
 def main():
     df_residential_property= display_dataframe()
-    df_residential_property = review_property_size_not_null()
-    df_residential_property = review_postal_code()
+    df_residential_property = review_columns_not_null()
     county_average_price = average_price_by_county()
+    print(df_residential_property)
 
 if __name__ == "__main__":
     main()
