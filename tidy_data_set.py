@@ -18,17 +18,21 @@ df_residential_property['Price'] = df_residential_property['Price'].replace({'
 
 
 def display_dataframe():
-    df_residential_property_top_100 = df_residential_property.head(100)
-    print(df_residential_property_top_100)
-    return df_residential_property_top_100
+    print("\n=== Display head of DF to complete initial review of data ===\n")
+    df_residential_property_top_10 = df_residential_property.head(10)
+    print(df_residential_property_top_10)
+    print()
+    return df_residential_property_top_10
 
 
 def display_county_price():
+    print("\n=== Create and display dataframe of price by county ===\n")
     df_price_by_county = df_residential_property[["Price", "County"]]
     print(df_price_by_county)
+    print()
     return df_price_by_county
 
-def display_property_size_not_null():
+def review_property_size_not_null():
     global df_residential_property
 
     # Review if column "Property Size Description" is all null, and if not, how many are filled as a percent of total rows
@@ -52,9 +56,9 @@ def display_property_size_not_null():
     return df_residential_property
 
 def main():
-    #df_head = display_dataframe()
-    #df_county_price = display_county_price
-    df_property_size_not_null = display_property_size_not_null()
+    display_dataframe()
+    display_county_price()
+    review_property_size_not_null()
 
 if __name__ == "__main__":
     main()
