@@ -1,0 +1,3 @@
+https://www.kaggle.com/datasets/erinkhoo/property-price-register-ireland
+
+https://www.kaggle.com/datasets/datajmcn/residential-property-prices-2020
