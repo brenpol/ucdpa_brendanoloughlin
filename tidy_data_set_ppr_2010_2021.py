@@ -7,8 +7,6 @@ df_2010_property_price = pd.read_csv("Property_Price_Register_Ireland-28-05-2021
 # Ensure that date column is in datetime
 df_2010_property_price["SALE_DATE"] = pd.to_datetime(df_2010_property_price["SALE_DATE"], format="mixed")
 
-print(df_2010_property_price.head())
-
 def review_columns_not_null():
     global df_2010_property_price
 

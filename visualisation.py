@@ -60,9 +60,22 @@ def line_chart_new_v_old_2020():
     df_new_v_old = ppr2020.df_residential_property
     df_new_v_old = df_new_v_old[["Description of Property", "Price"]]
 
+    type_list = df_new_v_old["Description of Property"].unique()
+
+    # loop through type list, and grab mean value of price for each df by type before storing in a dict
+    type_average_price = {}
+
+    for i in range(len(type_list)):
+        df_select_type = df_new_v_old[df_new_v_old["Description of Property"] == type_list[i]]
+        grab_mean_price = df_select_type["Price"].mean()
+        type_average_price["{0}".format(type_list[i])] = round(grab_mean_price, 2)
+
+    # Convert dictionary back to dataframe
+    df_new_v_old = pd.DataFrame.from_dict([type_average_price])
+
     plt.figure(figsize=(10, 6))
 
-    sns.barplot(data=df_new_v_old, x='Description of Property', y='Price')
+    sns.barplot(data=df_new_v_old)
 
     plt.tight_layout()
     plt.savefig("Generated Graphs/new_v_old_2020.png")
