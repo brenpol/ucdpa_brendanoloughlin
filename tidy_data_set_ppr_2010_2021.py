@@ -38,8 +38,34 @@ def review_columns_not_null():
 
     return df_2010_property_price
 
+
+def limit_to_2019_values():
+    global df_2010_property_price
+
+    df_2019_values = df_2010_property_price[df_2010_property_price["SALE_DATE"].dt.year == 2019]
+    return df_2019_values
+
+
+def average_price_by_month(df_2019_values):
+    # Group dates by month and find the mean
+    mean_price_by_month = round(df_2019_values.groupby(df_2019_values.SALE_DATE.dt.month)["SALE_PRICE"].mean(), 2)
+    df_mean_price_by_month = mean_price_by_month.to_frame(name = "Mean Price 2019")
+    
+    # Change date from numeric to str
+    df_mean_price_by_month.index = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+    # Reset index and rename it to date so that we can use the df for visualisation
+    df_mean_price_by_month = df_mean_price_by_month.reset_index()
+    df_mean_price_by_month = df_mean_price_by_month.rename(columns={"index": "Month"})
+
+    return df_mean_price_by_month
+
+
+
 def main():
     review_columns_not_null()
+    df_2019_values = limit_to_2019_values()
+    average_price_by_month(df_2019_values)
 
 if __name__ == "__main__":
     main()

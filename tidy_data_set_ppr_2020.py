@@ -6,12 +6,12 @@ df_residential_property = pd.read_csv("PPR-2020.csv", encoding= "iso-8859-15")
 
 # Rename columns to make it easier to work with
 df_residential_property = df_residential_property.rename(columns={
-    "Date of Sale (dd/mm/yyyy)": "Date of Sale",
+    "Date of Sale (dd/mm/yyyy)": "Date",
     "Price ()": "Price"
 })
 
 # Ensure that date column is in datetime
-df_residential_property["Date of Sale"] = pd.to_datetime(df_residential_property["Date of Sale"], format="%d/%m/%Y")
+df_residential_property["Date"] = pd.to_datetime(df_residential_property["Date"], format="%d/%m/%Y")
 
 # Convert the 'Price' column to numeric type
 df_residential_property['Price'] = df_residential_property['Price'].replace({'': '', ',': ''}, regex=True).astype(float)
@@ -77,11 +77,46 @@ def average_price_by_county():
 
     return county_average_price
 
+# Find the mean price by month
+def average_price_by_month():
+    global df_residential_property
+
+    # Group dates by month and find the mean
+    mean_price_by_month = round(df_residential_property.groupby(df_residential_property.Date.dt.month)["Price"].mean(), 2)
+    df_mean_price_by_month = mean_price_by_month.to_frame(name = "Mean Price 2020")
+    
+    # Change date from numeric to str
+    df_mean_price_by_month.index = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+    # Reset index and rename it to date so that we can use the df for visualisation
+    df_mean_price_by_month = df_mean_price_by_month.reset_index()
+    df_mean_price_by_month = df_mean_price_by_month.rename(columns={"index": "Month"})
+
+    return df_mean_price_by_month
+
+
+# Compare how many new build vs 2nd hand properties sold
+def new_vs_old():
+    global df_residential_property
+
+    property_description = df_residential_property["Description of Property"].unique()
+
+    dataframes = {}
+
+    for description in property_description:
+        df_temp = df_residential_property[df_residential_property["Description of Property"] == description]
+        df_temp = df_temp[["Price", "Description of Property"]]
+        dataframes[description] = df_temp
+
+    return dataframes
+
 def main():
     df_residential_property= display_dataframe()
     df_residential_property = review_columns_not_null()
     county_average_price = average_price_by_county()
-    print(df_residential_property)
+    average_price_by_month()
+    new_vs_old()
+    #print(df_residential_property)
 
 if __name__ == "__main__":
     main()
