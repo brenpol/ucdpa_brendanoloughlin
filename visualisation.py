@@ -105,6 +105,21 @@ def price_by_month_decade():
     plt.tight_layout()
     plt.savefig("Generated Graphs/price_by_month_by_year.png")
 
+# Generate line graph showing mean price per year
+def mean_price_by_year():
+    df_mean_price_by_year = jd.mean_price_per_year()
+
+    plt.figure(figsize=(10, 6))
+
+    sns.lineplot(data=df_mean_price_by_year, x = 'Year', y = 'Price')
+
+    plt.xlabel('Year')
+    plt.ylabel('Mean Price')
+    plt.title('Mean Price per year')
+    plt.xticks(rotation=90)
+
+    plt.tight_layout()
+    plt.savefig("Generated Graphs/mean_price_per_year.png")
 
 
 def main():
@@ -114,6 +129,7 @@ def main():
     line_chart_mean_price_merged_data()
     line_chart_new_v_old_2020()
     price_by_month_decade()
+    mean_price_by_year()
 
 
 if __name__ == "__main__":

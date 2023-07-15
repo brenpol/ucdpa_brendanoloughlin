@@ -37,6 +37,44 @@ def merge_month_mean_decade():
     # Merge data columns and return complete df
     df_merged_full_decade = pd.merge(df_local_mean_price_by_month_decade, df_local_mean_price_month_2020, on="Month")
 
-    #print(df_merged_full_decade)
-
     return df_merged_full_decade
+
+def mean_price_per_year():
+    global df_mean_price_by_month_decade
+    global df_mean_price_month_2020
+
+    # Create local dfs to avoid messing with previous code
+    df_local_mean_price_month_2020 = df_mean_price_month_2020
+    df_local_mean_price_by_month_decade = df_mean_price_by_month_decade
+
+    # Rename the df_mean_price_month_2020 column to match df_mean_price_by_month_decade
+    df_local_mean_price_month_2020 = df_local_mean_price_month_2020.rename(columns={'Mean Price 2020': '2020'})
+
+    # Merge data columns and return complete df
+    df_merged_full_decade = pd.merge(df_local_mean_price_by_month_decade, df_local_mean_price_month_2020, on="Month")
+
+    # Create a list of years to iterate over
+    years = df_merged_full_decade.columns
+
+    # Create dict to store mean price by year
+    dict_mean_price_per_year = {}
+
+    # Loop through years list and grab mean price 
+    for year in range(len(years)):
+        # Skip first column as this does not contain numeric data
+        if years[year] == "Month":
+            pass
+        # find mean value and store in dict
+        else:
+            df_mean_value_by_year = df_merged_full_decade[years[year]].mean()
+            dict_mean_price_per_year["{0}".format(years[year])] = round(df_mean_value_by_year, 2)
+
+    # Convert dict to df for plotting 
+    df_mean_price_by_year = pd.DataFrame.from_dict([dict_mean_price_per_year])
+
+    # This dataframe will not be easy to graph, this will need to be reshaped to have Year and Price columns 
+    df_mean_price_by_year = df_mean_price_by_year.melt(var_name='Year', value_name='Price')
+    
+    return df_mean_price_by_year
+
+mean_price_per_year()
