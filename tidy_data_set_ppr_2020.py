@@ -111,9 +111,9 @@ def new_vs_old():
     return dataframes
 
 def main():
-    df_residential_property= display_dataframe()
-    df_residential_property = review_columns_not_null()
-    county_average_price = average_price_by_county()
+    display_dataframe()
+    review_columns_not_null()
+    average_price_by_county()
     average_price_by_month()
     new_vs_old()
     #print(df_residential_property)

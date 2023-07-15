@@ -81,12 +81,39 @@ def line_chart_new_v_old_2020():
     plt.savefig("Generated Graphs/new_v_old_2020.png")
 
 
+def price_by_month_decade():
+
+    # Pull in the right data
+    df_mean_price_by_month_decade = jd.merge_month_mean_decade()
+
+    # Set the figure size
+    plt.figure(figsize=(10, 6))
+
+    # Create the line plot
+    sns.lineplot(data=df_mean_price_by_month_decade)
+
+    # Set the title and labels
+    plt.title('Average Price by Month')
+    plt.xlabel('Month')
+    plt.ylabel('Mean Price')
+    plt.legend(loc='upper right', bbox_to_anchor=(1.15, 1))
+
+    # Update x-axis labesl with month names 
+    month_names = df_mean_price_by_month_decade['Month']
+    plt.xticks(range(len(month_names)), month_names, rotation=45)
+
+    plt.tight_layout()
+    plt.savefig("Generated Graphs/price_by_month_by_year.png")
+
+
+
 def main():
     average_price_by_county_2020()
     average_price_by_month_2020()
     average_price_by_month_2019()
     line_chart_mean_price_merged_data()
     line_chart_new_v_old_2020()
+    price_by_month_decade()
 
 
 if __name__ == "__main__":
