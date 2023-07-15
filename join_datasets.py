@@ -40,8 +40,3 @@ def merge_month_mean_decade():
     #print(df_merged_full_decade)
 
     return df_merged_full_decade
-
-
-
-
-merge_month_mean_decade()
